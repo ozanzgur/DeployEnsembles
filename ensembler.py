@@ -341,16 +341,16 @@ class Ensembler():
                         best_cv_ens_score = new_cv_ens_score
                         ens_weight = ens_weight * 0.5
                 
-            if cv_ens_score > best_score:
-                best_score = cv_ens_score
+            if best_cv_ens_score > best_score:
+                best_score = best_cv_ens_score
                 best_param = param
                 print('Best cv score improved, params: {} ****************'.format(param))
-                if cv_ens_score > self.top_ens_score:
+                if best_cv_ens_score > self.top_ens_score:
                     ens_score_improved = True
                     print("*********** ENSEMBLE SCORE IMPROVED ***************///********************** ENSEMBLE SCORE IMPROVED *************")
 
-            scores.append(cv_ens_score)
-            print("CV ensemble score: {:<8.10f}".format(cv_ens_score))
+            scores.append(best_cv_ens_score)
+            print("CV ensemble score: {:<8.10f}".format(best_cv_ens_score))
 
         if ens_score_improved:
             self.add_output(weight = param['ens_weight'], out_test = predictions, out_train = preds_train)
