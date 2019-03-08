@@ -1,4 +1,4 @@
-## DeployKerasModels
+## DeployEnsembles
 
 The main purpose of this library is to make ensemble building process less time consuming for the user. You can
 test many models and combine their results with minimum effort. In addition, this library selects models directly based on
