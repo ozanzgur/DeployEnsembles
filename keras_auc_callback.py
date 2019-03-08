@@ -5,8 +5,16 @@
 
 ##################################################################################################
 
+
+# coding: utf-8
+
+from sklearn.metrics import roc_auc_score
+from keras.callbacks import Callback
+import numpy as np
+
 class RocAucMetricCallback(Callback):
     def __init__(self, min_delta=0, patience=0, verbose=0, predict_batch_size=1024):
+        #print("self vars: ",vars(self))  #uncomment and discover some things =)
         
         # FROM EARLY STOP
         super(RocAucMetricCallback, self).__init__()
@@ -17,6 +25,8 @@ class RocAucMetricCallback(Callback):
         self.stopped_epoch = 0
         self.monitor_op = np.greater
         self.predict_batch_size=predict_batch_size
+        self.ens_fold_x = None
+        self.ens_weight = None
     
     #def on_batch_begin(self, batch, logs={}):
     
@@ -26,20 +36,20 @@ class RocAucMetricCallback(Callback):
         self.wait = 0
         self.stopped_epoch = 0
         self.best = -np.Inf
-    
-    #def on_train_end(self, logs={}):
-    
-    #def on_epoch_begin(self, epoch, logs={}):
 
     def on_epoch_end(self, epoch, logs={}):
+        # :(
+        global ens_fold_x
+        global ens_weight
         if(self.validation_data):
             y_hat_val=self.model.predict(self.validation_data[0],batch_size=self.predict_batch_size)
-        
+            
         # FROM EARLY STOP
         if(self.validation_data):
+            current = roc_auc_score(self.validation_data[1], y_hat_val.flatten()*self.ens_weight + self.ens_fold_x)
             if (self.verbose == 1):
-                print("\n AUC Callback:",roc_auc_score(self.validation_data[1], y_hat_val))
-            current = roc_auc_score(self.validation_data[1], y_hat_val)
+                print("\n AUC Callback(ens):",current)
+            
             
             
             if self.monitor_op(current - self.min_delta, self.best):
@@ -54,3 +64,4 @@ class RocAucMetricCallback(Callback):
                     self.model.stop_training = True
                     
                     self.model.load_weights("callback_temp_weights.h5")
+
