@@ -18,4 +18,6 @@ improvements to the total ensemble score. In that sense, it resembles boosting.
 
 
 
-- I will be adding new features and an example soon. (Sklearn methods, Bayesian search, Automatic model selection, Actual boosting, etc.)
+- Added: Bayesian Search for sklearn functions
+
+Coming next: Examples, more decent readme
