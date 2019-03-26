@@ -20,4 +20,4 @@ improvements to the total ensemble score. In that sense, it resembles boosting.
 
 - Added: Bayesian Search for sklearn functions
 
-Coming next: Examples, more decent readme
+Coming next: Examples, more decent readme, a feature engineering tool
